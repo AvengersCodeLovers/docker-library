@@ -31,11 +31,13 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=raw,value=8.2-ci
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
           context: ./php/8.2/ci
           push: true
-          tags: 8.2-ci
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
